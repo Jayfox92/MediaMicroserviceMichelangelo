@@ -3,6 +3,7 @@ package com.michelangelo.mediamicroservice.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Media {
@@ -10,8 +11,28 @@ public class Media {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     LocalDate releaseDate;
+    @ManyToMany(targetEntity = Genre.class)
+    List<Genre> genres;
+    @ManyToOne(targetEntity = TypeOfMedia.class)
+    TypeOfMedia typeOfMedia;
 
     public Media() {
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public TypeOfMedia getTypeOfMedia() {
+        return typeOfMedia;
+    }
+
+    public void setTypeOfMedia(TypeOfMedia typeOfMedia) {
+        this.typeOfMedia = typeOfMedia;
     }
 
     public void setId(Long id) {
