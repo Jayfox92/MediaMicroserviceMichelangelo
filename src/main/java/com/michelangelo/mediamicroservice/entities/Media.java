@@ -10,13 +10,23 @@ public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    LocalDate releaseDate;
+    private LocalDate releaseDate;
     @ManyToMany(targetEntity = Genre.class)
-    List<Genre> genres;
+    private List<Genre> genres;
     @ManyToOne(targetEntity = TypeOfMedia.class)
-    TypeOfMedia typeOfMedia;
+    private TypeOfMedia typeOfMedia;
+    @OneToOne(targetEntity = NumberOnAlbum.class)
+    private NumberOnAlbum numberOnAlbum;
 
     public Media() {
+    }
+
+    public NumberOnAlbum getNumberOnAlbum() {
+        return numberOnAlbum;
+    }
+
+    public void setNumberOnAlbum(NumberOnAlbum numberOnAlbum) {
+        this.numberOnAlbum = numberOnAlbum;
     }
 
     public List<Genre> getGenres() {
