@@ -10,6 +10,7 @@ public class Album {
     private String title;
 
     public Album() {
+
     }
 
     public String getTitle() {
