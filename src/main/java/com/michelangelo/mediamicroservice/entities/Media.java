@@ -18,6 +18,13 @@ public class Media {
     @OneToOne(targetEntity = NumberOnAlbum.class)
     private NumberOnAlbum numberOnAlbum;
 
+    // This list will store the IDs of the artists related to this media
+    // Later, these IDs can be used to fetch full artist details from the Artist microservice
+    @ElementCollection
+    @CollectionTable(name = "media_artist_ids", joinColumns = @JoinColumn(name = "media_id"))
+    @Column(name = "artist_id")
+    private List<Long> artistIds;
+
     public Media() {
     }
 
@@ -60,4 +67,8 @@ public class Media {
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+    public List<Long> getArtistIds() { return artistIds; }
+
+    public void setArtistIds(List<Long> artistIds) { this.artistIds = artistIds; }
 }
