@@ -10,6 +10,8 @@ public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 40)
+    private String title;
     private LocalDate releaseDate;
     @ManyToMany(targetEntity = Genre.class)
     private List<Genre> genres;
@@ -18,12 +20,23 @@ public class Media {
     @OneToOne(targetEntity = NumberOnAlbum.class)
     private NumberOnAlbum numberOnAlbum;
 
+    @ManyToMany
+    private List<Artist> artists;
+
+    @ManyToOne
+    private Album album;
+
+
     // This list will store the IDs of the artists related to this media
     // Later, these IDs can be used to fetch full artist details from the Artist microservice
-    @ElementCollection
+    /*@ElementCollection
     @CollectionTable(name = "media_artist_ids", joinColumns = @JoinColumn(name = "media_id"))
     @Column(name = "artist_id")
-    private List<Long> artistIds;
+    private List<Long> artistIds;*/
+    /*public List<Long> getArtistIds() { return artistIds; }
+
+    public void setArtistIds(List<Long> artistIds) { this.artistIds = artistIds; }*/
+
 
     public Media() {
     }
@@ -60,6 +73,14 @@ public class Media {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public LocalDate getReleaseDate() {
         return releaseDate;
     }
@@ -68,7 +89,21 @@ public class Media {
         this.releaseDate = releaseDate;
     }
 
-    public List<Long> getArtistIds() { return artistIds; }
 
-    public void setArtistIds(List<Long> artistIds) { this.artistIds = artistIds; }
+
+    public List<Artist> getArtists() {
+        return artists;
+    }
+
+    public void setArtists(List<Artist> artists) {
+        this.artists = artists;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
 }
