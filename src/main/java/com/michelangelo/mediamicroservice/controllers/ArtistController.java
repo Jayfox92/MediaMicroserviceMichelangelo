@@ -1,14 +1,19 @@
 package com.michelangelo.mediamicroservice.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.michelangelo.mediamicroservice.entities.Media;
+import com.michelangelo.mediamicroservice.services.ArtistService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/artist")
 public class ArtistController {
 
-    // @Autowired
-    // private ArtistService artistService;
+    @Autowired
+    private ArtistService artistService;
 
     // Endpoint: Hämta alla album för en artist med id och skicka tillbaka en lista med album objekt
 /*
@@ -18,6 +23,11 @@ public class ArtistController {
         }
     }
 */
+
+    @GetMapping("/getmediabyartist/{id}")
+    public ResponseEntity<List<Media>> getMediaByArtist(@PathVariable("id") long id){
+        return ResponseEntity.ok(artistService.getMediaByArtist(id));
+    }
 
 
 }
