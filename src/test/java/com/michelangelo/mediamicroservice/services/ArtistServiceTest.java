@@ -11,10 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArtistServiceTest {
 
-    /*@Test
-    public void shouldReturn
+    @Test
+    public void shouldReturn(){
 
-    public List<Media> getMediaByArtist(long id) {
+    }
+
+    /*public List<Media> getMediaByArtist(long id) {
         Artist artist = artistRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Artist","id",id));
         return artist.getCreatedMedia();
     }*/
