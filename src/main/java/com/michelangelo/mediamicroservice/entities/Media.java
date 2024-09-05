@@ -14,6 +14,11 @@ public class Media {
     private String title;
     private LocalDate releaseDate;
     @ManyToMany(targetEntity = Genre.class)
+   /* @JoinTable(
+            name = "media_genre",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )*/
     private List<Genre> genres;
     @ManyToOne(targetEntity = TypeOfMedia.class)
     private TypeOfMedia typeOfMedia;

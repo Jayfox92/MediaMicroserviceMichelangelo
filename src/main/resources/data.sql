@@ -1,5 +1,5 @@
 -- Radera alla tabeller om de redan finns
-DROP TABLE IF EXISTS Media;
+/*DROP TABLE IF EXISTS Media;
 DROP TABLE IF EXISTS NumberOnAlbum;
 DROP TABLE IF EXISTS Genre;
 DROP TABLE IF EXISTS TypeOfMedia;
@@ -52,12 +52,12 @@ CREATE TABLE Media (
                        FOREIGN KEY (album_id) REFERENCES Album(id),
                        FOREIGN KEY (genre_id) REFERENCES Genre(id)
 );
-
+*/
 -- Lägg till Genre
-INSERT INTO Genre (name) VALUES ('Rock'), ('Pop'), ('Metal'), ('Blues'), ('Jazz'), ('Hard Rock');
+INSERT INTO Type_Of_Media (type) VALUES ('Musik'), ('Pod'), ('Video');
 
 -- Lägg till TypeOfMedia
-INSERT INTO TypeOfMedia (type) VALUES ('Musik'), ('Pod'), ('Video');
+INSERT INTO Genre (name) VALUES ('Rock'), ('Pop'), ('Metal'), ('Blues'), ('Jazz'), ('Hard Rock');
 
 -- Lägg till Artist
 INSERT INTO Artist (name) VALUES ('Led Zeppelin'), ('AC/DC'), ('The Rolling Stones');
@@ -72,7 +72,7 @@ INSERT INTO Album (title) VALUES
                               ('Let It Bleed');
 
 -- Lägg till NumberOnAlbum
-INSERT INTO NumberOnAlbum (numberOnAlbum, album_id) VALUES
+INSERT INTO Number_On_Album (number_On_Album, album_id) VALUES
                                                         (1, 1), (2, 1),
                                                         (1, 2), (2, 2),
                                                         (1, 3), (2, 3),
@@ -97,3 +97,4 @@ INSERT INTO Media (title, release_date, type_of_media_id, number_on_album_id, al
                                                                                                       ('Wild Horses', '1971-04-16', 1, 10, 5, 4),        -- Blues
                                                                                                       ('Gimme Shelter', '1969-12-05', 1, 11, 6, 4),      -- Blues
                                                                                                       ('You Can’t Always Get What You Want', '1969-12-05', 1, 12, 6, 4); -- Blues
+
