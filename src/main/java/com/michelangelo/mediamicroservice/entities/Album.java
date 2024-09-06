@@ -1,10 +1,13 @@
 package com.michelangelo.mediamicroservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"listOfMedia"})
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,9 +15,10 @@ public class Album {
     private String title;
 
     @ManyToOne
+    @JoinColumn(name = "artist_id")  // Specificerar den kolumn som används för relationen
     private Artist artist;
 
-    @OneToMany
+    @OneToMany(mappedBy = "album")   // Antar att Media har en 'album' relation
     private List<Media> listOfMedia;
 
 
