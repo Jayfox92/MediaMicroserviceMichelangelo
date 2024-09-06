@@ -16,9 +16,11 @@ public class Album {
 
     @ManyToOne
     @JoinColumn(name = "artist_id")  // Specificerar den kolumn som används för relationen
+    @JsonIgnoreProperties({ "albums", "createdMedia" })
     private Artist artist;
 
     @OneToMany(mappedBy = "album")   // Antar att Media har en 'album' relation
+    @JsonIgnoreProperties(value = "album")
     private List<Media> listOfMedia;
 
 
