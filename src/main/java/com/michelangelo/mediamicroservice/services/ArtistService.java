@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class ArtistService implements ArtistServiceInterface{
 
+    private String commitString;
     private final ArtistRepository artistRepository;
 
     @Autowired
