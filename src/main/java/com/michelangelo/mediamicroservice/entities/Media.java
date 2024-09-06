@@ -1,11 +1,16 @@
 package com.michelangelo.mediamicroservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "numberOnAlbum"})
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,18 +18,39 @@ public class Media {
     @Column(length = 40)
     private String title;
     private LocalDate releaseDate;
-    @ManyToMany(targetEntity = Genre.class)
+    @ManyToMany
+    @JoinTable(
+            name = "media_genre", // Namnet på join-tabellen
+            joinColumns = @JoinColumn(name = "media_id"), // Kolumn som refererar till Media
+            inverseJoinColumns = @JoinColumn(name = "genre_id") // Kolumn som refererar till Genre
+    )
     private List<Genre> genres;
-    @ManyToOne(targetEntity = TypeOfMedia.class)
+
+    @ManyToOne
+    @JoinColumn(name = "type_of_media_id")
     private TypeOfMedia typeOfMedia;
-    @OneToOne(targetEntity = NumberOnAlbum.class)
+
+    @ManyToOne
+    @JoinColumn(name = "number_on_album_id")
     private NumberOnAlbum numberOnAlbum;
 
     @ManyToMany
+    @JoinTable(
+            name = "media_artist",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id")
+    )
+    @JsonProperty("artists")
     private List<Artist> artists;
 
     @ManyToOne
+    @JoinColumn(name = "album_id")
+    @JsonProperty("album")
     private Album album;
+
+    @Column(nullable = false, length = 100)
+    @JsonProperty("url") // This will ensure 'url' is included in JSON output
+    private String url;
 
 
     // This list will store the IDs of the artists related to this media
@@ -90,7 +116,6 @@ public class Media {
     }
 
 
-
     public List<Artist> getArtists() {
         return artists;
     }
@@ -106,4 +131,13 @@ public class Media {
     public void setAlbum(Album album) {
         this.album = album;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
 }
