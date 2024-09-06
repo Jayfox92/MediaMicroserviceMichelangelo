@@ -63,5 +63,4 @@ public class Artist {
         this.albums = albums;
     }
 
-
 }
