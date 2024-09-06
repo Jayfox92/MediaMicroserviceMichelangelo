@@ -12,7 +12,6 @@ import java.util.List;
 @Service
 public class ArtistService implements ArtistServiceInterface{
 
-    private String commitString;
     private final ArtistRepository artistRepository;
 
     @Autowired
@@ -27,9 +26,23 @@ public class ArtistService implements ArtistServiceInterface{
         return artist.getAlbums();
     }
 
-    @Override
+    /*@Override
+    public List<Album> getAllAlbums(long id) {
+        Artist artist = artistRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Artist", "id", id));
+        return artistRepository.findAllAlbumsByArtistId(id);
+    }*/
+
+    /*@Override
     public List<Media> getMediaByArtist(long id) {
         Artist artist = artistRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Artist","id",id));
         return artist.getCreatedMedia();
+    }*/
+
+    @Override
+    public List<Media> getMediaByArtist(long id) {
+        Artist artist = artistRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Artist","id",id));
+        return artistRepository.findAllMediaByArtistId(id);
     }
+
+
 }

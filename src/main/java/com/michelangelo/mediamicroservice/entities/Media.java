@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "numberOnAlbum"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "numberOnAlbum"})
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,7 @@ public class Media {
             joinColumns = @JoinColumn(name = "media_id"), // Kolumn som refererar till Media
             inverseJoinColumns = @JoinColumn(name = "genre_id") // Kolumn som refererar till Genre
     )
+    @JsonIgnoreProperties(value = "listOfMedia")
     private List<Genre> genres;
 
     @ManyToOne
@@ -32,6 +33,7 @@ public class Media {
 
     @ManyToOne
     @JoinColumn(name = "number_on_album_id")
+    @JsonIgnoreProperties(value = "album")
     private NumberOnAlbum numberOnAlbum;
 
     @ManyToMany
@@ -41,6 +43,7 @@ public class Media {
             inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     @JsonProperty("artists")
+    @JsonIgnoreProperties(value = "createdMedia")
     private List<Artist> artists;
 
     @ManyToOne

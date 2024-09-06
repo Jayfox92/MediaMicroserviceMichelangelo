@@ -1,5 +1,6 @@
 package com.michelangelo.mediamicroservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class Genre {
     private Long id;
     private String name;
     @ManyToMany//(mappedBy = "genres")
+    @JsonIgnoreProperties(value = "genres")
     private List<Media> listOfMedia;
 
     public Genre() {
