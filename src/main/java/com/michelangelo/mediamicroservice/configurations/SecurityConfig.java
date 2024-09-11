@@ -24,13 +24,13 @@ public class SecurityConfig {
                                 "/api/v5/deletefield/**",
                                 "/api/v5/updateinfo")
                         .hasRole("ADMIN")*/
-                        .requestMatchers(//"/api/v5/availability",
+                        //.requestMatchers(//"/api/v5/availability",
                                 //"/api/v5/booking",
                                 //"/api/v5/mybookings",
-                                "/media/**")
-                        .hasRole("USER"))
-                        //.anyRequest()
-                        //.authenticated())
+                                //"/v1/media/**")
+                        //.hasRole("USER")
+                        .anyRequest()
+                        .authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
         return http.build();
