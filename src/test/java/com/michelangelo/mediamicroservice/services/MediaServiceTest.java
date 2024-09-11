@@ -32,7 +32,7 @@ public class MediaServiceTest {
         when(mediaRepository.findById(mediaId)).thenReturn(Optional.of(media));
 
         // When
-        Media result = mediaService.getMediaById(mediaId);
+        Media result = mediaService.getMediaById(mediaId,"username");
 
         // Then
         assertNotNull(result);
@@ -48,7 +48,7 @@ public class MediaServiceTest {
 
         // When & Then
         ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> {
-            mediaService.getMediaById(mediaId);
+            mediaService.getMediaById(mediaId,"username");
         });
 
         assertEquals("Media not found with id : 2", thrown.getMessage());
