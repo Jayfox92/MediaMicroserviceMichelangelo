@@ -5,8 +5,6 @@ import com.michelangelo.mediamicroservice.repositories.MediaRepository;
 import com.michelangelo.mediamicroservice.services.MediaServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +24,9 @@ public class MediaController {
      * In the future, you might extend this to fetch additional data from other microservices.
      */
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Media> getMediaById(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        return ResponseEntity.ok(mediaService.getMediaById(id,username));
+    @GetMapping("/{mediaId}/{userId}")
+    public ResponseEntity<Media> getMediaById(@PathVariable Long mediaId,@PathVariable Long userId) {
+        return ResponseEntity.ok(mediaService.getMediaById(mediaId,userId));
     }
 
     /*Pre-security config/logging of media for user

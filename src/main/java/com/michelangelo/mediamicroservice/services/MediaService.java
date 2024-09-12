@@ -13,6 +13,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
+
 @Service
 public class MediaService implements MediaServiceInterface{
     @Autowired
@@ -20,38 +22,24 @@ public class MediaService implements MediaServiceInterface{
     @Autowired
     private RestTemplate restTemplate;
 
-    @Override
-    public Media getMediaById(Long id,String username) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth("Kalle", "Kalle");
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        //MediaUser user = restTemplate.getForObject("http://UserMicroservice/v2/user/getuser/"+id, MediaUser.class);
-        MediaUser user = new MediaUser();
-        try {
-            ResponseEntity<MediaUser> response = restTemplate.exchange(
-                    "http://UserMicroservice/v2/user/getuser/" + id,
-                    HttpMethod.GET,
-                    entity,
-                    MediaUser.class
-            );
-            user = response.getBody();
-            if (user == null || !user.getUserName().equals(username)) {
-                throw new IllegalAccessException(username);
-            }
-        } catch (Exception e) {e.printStackTrace();}
-        try {
-            restTemplate.exchange(
-                    "http://UserMicroservice/v2/streamhistory/increment/" + user.getId() + "/" + id,
-                    HttpMethod.PUT,
-                    entity,
-                    Void.class
-            );
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        //restTemplate.put("http://UserMicroservice/v2/streamhistory/increment/" + user.getId() + "/" + id, null);
+    /*@Override
+    public Media getMediaById(Long id,Long userId) {
+
+        MediaUser user = restTemplate.getForObject("http://UserMicroservice/v2/user/getuser/"+userId, MediaUser.class);
+
+        restTemplate.put("http://UserMicroservice/v2/streamhistory/increment/" + userId + "/" + id, null);
         return mediaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Media", "id", id));
+    }*/
+
+    @Override
+    public Media getMediaById(Long mediaId,Long userId) {
+        Media mediaToReturn = mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Media", "id", mediaId));
+        MediaUser user = restTemplate.getForObject("http://UserMicroservice/v2/user/getuser/"+userId, MediaUser.class);
+        if (user == null) throw new ResourceNotFoundException("MediaUser", "id", userId);
+        restTemplate.put("http://UserMicroservice/v2/streamhistory/increment/" + user.getId() + "/" + mediaId, Void.class);
+        return mediaToReturn;
     }
 
     /*

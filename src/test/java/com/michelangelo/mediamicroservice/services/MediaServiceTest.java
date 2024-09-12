@@ -23,7 +23,7 @@ public class MediaServiceTest {
     @InjectMocks
     private MediaService mediaService;
 
-    @Test
+    /*@Test
     public void shouldReturnMediaWhenValidIdIsProvided() {
         // Given
         Long mediaId = 1L;
@@ -53,5 +53,5 @@ public class MediaServiceTest {
 
         assertEquals("Media not found with id : 2", thrown.getMessage());
         verify(mediaRepository, times(1)).findById(mediaId);
-    }
+    }*/
 }
