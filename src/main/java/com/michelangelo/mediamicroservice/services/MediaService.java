@@ -22,15 +22,6 @@ public class MediaService implements MediaServiceInterface{
     @Autowired
     private RestTemplate restTemplate;
 
-    /*@Override
-    public Media getMediaById(Long id,Long userId) {
-
-        MediaUser user = restTemplate.getForObject("http://UserMicroservice/v2/user/getuser/"+userId, MediaUser.class);
-
-        restTemplate.put("http://UserMicroservice/v2/streamhistory/increment/" + userId + "/" + id, null);
-        return mediaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Media", "id", id));
-    }*/
 
     @Override
     public Media getMediaById(Long mediaId,Long userId) {
