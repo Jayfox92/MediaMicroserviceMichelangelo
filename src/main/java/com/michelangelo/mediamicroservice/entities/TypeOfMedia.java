@@ -9,6 +9,7 @@ public class TypeOfMedia {
     private Long id;
     private String type;
 
+
     public TypeOfMedia() {
     }
 

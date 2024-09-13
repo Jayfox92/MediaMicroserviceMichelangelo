@@ -11,7 +11,7 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany//(mappedBy = "genres")
+    @ManyToMany(mappedBy = "genres")
     @JsonIgnoreProperties(value = "genres")
     private List<Media> listOfMedia;
 

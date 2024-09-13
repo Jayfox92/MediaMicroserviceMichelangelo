@@ -2,6 +2,7 @@ package com.michelangelo.mediamicroservice.controllers;
 
 import com.michelangelo.mediamicroservice.entities.Media;
 import com.michelangelo.mediamicroservice.repositories.MediaRepository;
+import com.michelangelo.mediamicroservice.services.MediaService;
 import com.michelangelo.mediamicroservice.services.MediaServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.Scanner;
 public class MediaController {
 
     @Autowired
-    private MediaServiceInterface mediaService;
+    private MediaService mediaService;
 
 
     /**

@@ -15,16 +15,16 @@ public class Artist {
     @Column (length = 40, nullable = false)
     private String name;
 
-    @ManyToMany
-    @JoinTable(
+    @ManyToMany(mappedBy = "artists")
+    /*@JoinTable(
             name = "media_artist", // Join-table name
             joinColumns = @JoinColumn(name = "media_id"), // Column in media_artist table that references Media
             inverseJoinColumns = @JoinColumn(name = "artist_id") // Column in media_artist table that references Artist
-    )
+    )*/
     @JsonIgnoreProperties(value = "artists")
     private List<Media> createdMedia;
 
-    @OneToMany
+    @OneToMany(mappedBy = "artist")
     @JsonIgnoreProperties(value = "artist")
     private List<Album> albums;
 

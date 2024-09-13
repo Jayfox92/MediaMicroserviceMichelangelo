@@ -23,16 +23,17 @@ public class MediaServiceTest {
     @InjectMocks
     private MediaService mediaService;
 
-    /*@Test
+    @Test
     public void shouldReturnMediaWhenValidIdIsProvided() {
         // Given
         Long mediaId = 1L;
+        Long userId = 1L;
         Media media = new Media();
         media.setId(mediaId);
         when(mediaRepository.findById(mediaId)).thenReturn(Optional.of(media));
 
         // When
-        Media result = mediaService.getMediaById(mediaId,"username");
+        Media result = mediaService.getMediaById(mediaId,userId);
 
         // Then
         assertNotNull(result);
@@ -40,18 +41,26 @@ public class MediaServiceTest {
         verify(mediaRepository, times(1)).findById(mediaId);
     }
 
+
+
     @Test
     public void shouldThrowExceptionWhenInvalidIdIsProvided() {
         // Given
         Long mediaId = 2L;
+        Long userId = 2L;
         when(mediaRepository.findById(mediaId)).thenReturn(Optional.empty());
 
         // When & Then
         ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> {
-            mediaService.getMediaById(mediaId,"username");
+            mediaService.getMediaById(mediaId,userId);
         });
 
         assertEquals("Media not found with id : 2", thrown.getMessage());
         verify(mediaRepository, times(1)).findById(mediaId);
-    }*/
+    }
+
+
+
+
+
 }
