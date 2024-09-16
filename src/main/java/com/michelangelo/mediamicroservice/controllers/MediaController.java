@@ -1,15 +1,11 @@
 package com.michelangelo.mediamicroservice.controllers;
 
 import com.michelangelo.mediamicroservice.entities.Media;
-import com.michelangelo.mediamicroservice.repositories.MediaRepository;
 import com.michelangelo.mediamicroservice.services.MediaService;
-import com.michelangelo.mediamicroservice.services.MediaServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Scanner;
 
 @RestController
 @RequestMapping("/media/media")
@@ -26,18 +22,15 @@ public class MediaController {
      */
 
     @GetMapping("/{mediaId}/{userId}")
-    public ResponseEntity<Media> getMediaById(@PathVariable Long mediaId,@PathVariable Long userId) {
-        return ResponseEntity.ok(mediaService.getMediaById(mediaId,userId));
+    public ResponseEntity<Media> getMediaByMediaIdAndUserId(@PathVariable Long mediaId,@PathVariable Long userId) {
+        return ResponseEntity.ok(mediaService.getMedia(mediaId,userId));
     }
 
-    /*Pre-security config/logging of media for user
-    @GetMapping("/{id}")
-    public Media getMedia(@PathVariable Long id) {
-        return mediaService.getMediaById(id);
-    }*/
+    @GetMapping("/{mediaId}")
+    public ResponseEntity<Media>  getMediaByMediaId(@PathVariable Long mediaId) {
+        return  ResponseEntity.ok(mediaService.getMediaById(mediaId));
+    }
 
-
-    // Additional methods can be added here to handle communication with other microservices
 }
 
 
