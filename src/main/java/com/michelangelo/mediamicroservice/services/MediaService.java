@@ -27,9 +27,9 @@ public class MediaService implements MediaServiceInterface{
     public Media getMediaById(Long mediaId,Long userId) {
         Media mediaToReturn = mediaRepository.findById(mediaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Media", "id", mediaId));
-        MediaUser user = restTemplate.getForObject("http://UserMicroservice/v2/user/getuser/"+userId, MediaUser.class);
+        MediaUser user = restTemplate.getForObject("http://UserMicroservice/user/mediauser/getuser/"+userId, MediaUser.class);
         if (user == null) throw new ResourceNotFoundException("MediaUser", "id", userId);
-        restTemplate.put("http://UserMicroservice/v2/streamhistory/increment/" + user.getId() + "/" + mediaId, Void.class);
+        restTemplate.put("http://UserMicroservice/user/streamhistory/increment/" + user.getId() + "/" + mediaId, Void.class);
         return mediaToReturn;
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 @RestController
-@RequestMapping("/v1/media")
+@RequestMapping("/media/media")
 public class MediaController {
 
     @Autowired
