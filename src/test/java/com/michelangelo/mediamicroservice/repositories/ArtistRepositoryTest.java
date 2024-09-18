@@ -1,13 +1,15 @@
 package com.michelangelo.mediamicroservice.repositories;
 
+import com.michelangelo.mediamicroservice.entities.Album;
 import com.michelangelo.mediamicroservice.entities.Artist;
 import com.michelangelo.mediamicroservice.entities.Media;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,47 +17,108 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestPropertySource(properties = {
-        "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
-        "spring.h2.console.enabled=true",
-        "spring.h2.console.path=/h2-console",
-        "spring.sql.init.mode=never",
-        "spring.jpa.hibernate.ddl-auto=create-drop"
-})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TestPropertySource(locations = "classpath:application-test.properties")
+@Sql(scripts = "/schema.sql")
 class ArtistRepositoryTest {
     @Autowired
-    ArtistRepository artistRepository;
-    @Autowired
-    MediaRepository mediaRepository;
+    private ArtistRepository artistRepository;
 
+    @Autowired
+    private MediaRepository mediaRepository;
+
+    @Autowired
+    private AlbumRepository albumRepository;
+
+    private Artist artist1;
+    private final String artistName = "Test Artist";
+
+    private Artist artist2;
+
+    @BeforeEach
+    void setUp() {
+        artist1 = new Artist();
+        artist1.setName(artistName);
+
+        artist2 = new Artist();
+        artist2.setName(artistName); // Enbart för att name är not null
+    }
+
+    // findAllMediaByArtistId()
     @Test
-    void findAllMediaByArtistId() {
-        long searchId = 1;
-        Artist artist1 = new Artist();
-        artist1.setId(1L);
-        artist1.setName("Kalle");
+    void shouldReturnMediaWithArtistId() {
+        String mediaTitle = "Test Title";
+        String mediaURL = "Test URL";
+
+        Media media1 = new Media();
+        media1.setTitle(mediaTitle);
+        media1.setUrl(mediaURL);
+
         List<Artist> artistList = new ArrayList<>();
         artistList.add(artist1);
-        Media media1 = new Media();
         media1.setArtists(artistList);
-        media1.setId(searchId);
-        media1.setTitle("Title 1");
+
         List<Media> mediaList = new ArrayList<>();
         mediaList.add(media1);
+
         artist1.setCreatedMedia(mediaList);
+
         artistRepository.save(artist1);
         mediaRepository.save(media1);
 
+        List<Media> result = artistRepository.findAllMediaByArtistId(artist1.getId());
 
-        List<Media> result = artistRepository.findAllMediaByArtistId(searchId);
-
-        assertEquals(result.get(0).getId(), searchId);
-        assertEquals(result.get(0).getTitle(), "Title 1");
-        assertEquals(result.get(0).getArtists().get(0).getId(), searchId);
-        assertEquals(result.get(0).getArtists().get(0).getName(), "Kalle");
-
-
+        assertEquals(artist1.getId(), result.get(0).getArtists().get(0).getId());
+        assertEquals(artistName, result.get(0).getArtists().get(0).getName());
+        assertEquals(mediaURL, result.get(0).getUrl());
+        assertEquals(mediaTitle, result.get(0).getTitle());
     }
 
+    @Test
+    void shouldReturnEmptyListOfMediaForArtistId() {
+        artistRepository.save(artist2); // Spara artist utan media
+
+        List<Media> albumsReturned = artistRepository.findAllMediaByArtistId(artist2.getId());
+
+        assertEquals(0, albumsReturned.size());
+        assertTrue(albumsReturned.isEmpty());
+    }
+
+
+    // findAlbumsById()
+    @Test
+    void shouldReturnListOfAlbumsForArtistId() {
+        String albumTitle1 = "Test Title 1";
+        Album album1 = new Album();
+        album1.setTitle(albumTitle1);
+        List<Album> albumList = new ArrayList<>(List.of(album1));
+
+        artist1.setAlbums(albumList);
+
+        album1.setArtist(new ArrayList<>());
+        album1.getArtists().add(artist1);
+
+        albumRepository.save(album1);
+        artistRepository.save(artist1);
+
+        List<Album> albumsReturned = artistRepository.findAlbumsById(artist1.getId());
+
+        assertEquals(artist1.getId(), albumsReturned.get(0).getArtists().get(0).getId());
+        assertEquals(artist1.getName(), albumsReturned.get(0).getArtists().get(0).getName());
+        assertEquals(albumList.size(), albumsReturned.size());
+        assertEquals(albumList.get(0).getId(), albumsReturned.get(0).getId());
+        assertEquals(albumTitle1, albumsReturned.get(0).getTitle());
+    }
+
+
+    @Test
+    void shouldReturnEmptyListOfAlbumsForArtistId() {
+        artistRepository.save(artist2); // Spara artist utan album
+
+        List<Album> albumsReturned = artistRepository.findAlbumsById(artist2.getId());
+
+        assertEquals(0, albumsReturned.size());
+        assertTrue(albumsReturned.isEmpty());
+    }
 
 }

@@ -51,8 +51,7 @@ class ArtistServiceTest {
     public void shouldReturnAllAlbumsWhenArtistExists(){
         long testId = 1L;
         List<Album> albumList = new ArrayList<>(List.of(new Album(), new Album(), new Album()));
-        artist.setAlbums(albumList);
-
+        when(artistRepositoryMock.findAlbumsById(testId)).thenReturn(albumList);
         when(artistRepositoryMock.findById(testId)).thenReturn(Optional.of(artist));
 
         assertEquals(albumList, artistService.getAllAlbums(testId));
