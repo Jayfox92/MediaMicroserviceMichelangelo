@@ -75,7 +75,7 @@ class ArtistRepositoryTest {
     }
 
     @Test
-    void shouldReturnEmptyListOfMediaForArtistId() {
+    void shouldReturnEmptyListOfMediaWhenNoMediaExistForArtistId() {
         artistRepository.save(artist2); // Spara artist utan media
 
         List<Media> albumsReturned = artistRepository.findAllMediaByArtistId(artist2.getId());
@@ -87,7 +87,7 @@ class ArtistRepositoryTest {
 
     // findAlbumsById()
     @Test
-    void shouldReturnListOfAlbumsForArtistId() {
+    void shouldReturnListOfAlbumsWhenAlbumsExistsForArtistId() {
         String albumTitle1 = "Test Title 1";
         Album album1 = new Album();
         album1.setTitle(albumTitle1);
@@ -112,7 +112,7 @@ class ArtistRepositoryTest {
 
 
     @Test
-    void shouldReturnEmptyListOfAlbumsForArtistId() {
+    void shouldReturnEmptyListOfAlbumsWhenNoAlbumsExistForArtistId() {
         artistRepository.save(artist2); // Spara artist utan album
 
         List<Album> albumsReturned = artistRepository.findAlbumsById(artist2.getId());
