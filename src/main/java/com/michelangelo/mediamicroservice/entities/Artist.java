@@ -3,10 +3,12 @@ package com.michelangelo.mediamicroservice.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 //@JsonIgnoreProperties("createdMedia")
+
+@Entity
 public class Artist {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -24,9 +26,15 @@ public class Artist {
     @JsonIgnoreProperties(value = "artists")
     private List<Media> createdMedia;
 
-    @OneToMany(mappedBy = "artist")
+    @ManyToMany
+    @JoinTable(
+            name = "artist_albums",
+            joinColumns = @JoinColumn(name = "artist_id"),
+            inverseJoinColumns = @JoinColumn(name = "album_id")
+    )
     @JsonIgnoreProperties(value = "artist")
-    private List<Album> albums;
+    private List<Album> albums = new ArrayList<>();
+
 
     public Artist(){}
 

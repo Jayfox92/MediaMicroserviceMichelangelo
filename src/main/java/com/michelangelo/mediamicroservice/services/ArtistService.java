@@ -22,27 +22,14 @@ public class ArtistService implements ArtistServiceInterface{
 
     @Override
     public List<Album> getAllAlbums(long id) {
-        Artist artist = artistRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Artist", "id", id));
-        return artist.getAlbums();
+        artistRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Artist", "id", id));
+        return artistRepository.findAlbumsById(id);
     }
-
-    /*@Override
-    public List<Album> getAllAlbums(long id) {
-        Artist artist = artistRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Artist", "id", id));
-        return artistRepository.findAllAlbumsByArtistId(id);
-    }*/
-
-    /*@Override
-    public List<Media> getMediaByArtist(long id) {
-        Artist artist = artistRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Artist","id",id));
-        return artist.getCreatedMedia();
-    }*/
 
     @Override
     public List<Media> getMediaByArtist(long id) {
         Artist artist = artistRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Artist","id",id));
         return artistRepository.findAllMediaByArtistId(id);
     }
-
 
 }

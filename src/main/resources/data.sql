@@ -123,7 +123,7 @@ INSERT INTO media_artist (media_id, artist_id) VALUES
                                                    (9, 3), (10, 3), (11, 3), (12, 3);
 */
 -- Lägg till Genre
-INSERT INTO Genre (id, name) VALUES
+INSERT INTO genre (id, name) VALUES
                                  (1, 'Rock'),
                                  (2, 'Pop'),
                                  (3, 'Metal'),
@@ -138,19 +138,19 @@ INSERT INTO type_of_media (id, type) VALUES
                                        (3, 'Video');
 
 -- Lägg till Artist
-INSERT INTO Artist (id, name) VALUES
+INSERT INTO artist (id, name) VALUES
                                   (1, 'Led Zeppelin'),
                                   (2, 'AC/DC'),
                                   (3, 'The Rolling Stones');
 
 -- Lägg till Album med artist_id
-INSERT INTO Album (id, title, artist_id) VALUES
-                                             (1, 'Led Zeppelin IV', 1),
-                                             (2, 'Physical Graffiti', 1),
-                                             (3, 'Back in Black', 2),
-                                             (4, 'Highway to Hell', 2),
-                                             (5, 'Sticky Fingers', 3),
-                                             (6, 'Let It Bleed', 3);
+INSERT INTO album (id, title) VALUES
+                                             (1, 'Led Zeppelin IV'),
+                                             (2, 'Physical Graffiti'),
+                                             (3, 'Back in Black'),
+                                             (4, 'Highway to Hell'),
+                                             (5, 'Sticky Fingers'),
+                                             (6, 'Let It Bleed');
 
 -- Lägg till NumberOnAlbum
 INSERT INTO number_on_album (id, number_on_album, album_id) VALUES
@@ -168,7 +168,7 @@ INSERT INTO number_on_album (id, number_on_album, album_id) VALUES
                                                             (12, 2, 6);
 
 -- Lägg till Media
-INSERT INTO Media (id, title, release_date, type_of_media_id, number_on_album_id, album_id, url) VALUES
+INSERT INTO media (id, title, release_date, type_of_media_id, number_on_album_id, album_id, url) VALUES
                                                                                                      (1, 'Stairway to Heaven', '1971-11-08', 1, 1, 1, 'https://example.com/ledzeppelin/stairway_to_heaven'),
                                                                                                      (2, 'Black Dog', '1971-11-08', 1, 2, 1, 'https://example.com/ledzeppelin/black_dog'),
                                                                                                      (3, 'Kashmir', '1975-02-24', 1, 3, 2, 'https://example.com/ledzeppelin/kashmir'),
@@ -193,8 +193,8 @@ INSERT INTO media_genre (media_id, genre_id) VALUES
                                                  (1, 1), (2, 1), (3, 1), (4, 1),
                                                  (5, 1), (6, 1), (7, 1), (8, 1),
                                                  (9, 1), (10, 1), (11, 1), (12, 1);
-/*
-INSERT INTO artist_albums (artist_id, albums_id) VALUES
+
+INSERT INTO artist_albums (artist_id, album_id) VALUES
                                                     (1,1),
                                                     (1,2),
                                                     (2,3),
@@ -202,4 +202,4 @@ INSERT INTO artist_albums (artist_id, albums_id) VALUES
                                                     (3,5),
                                                     (3,6);
 
- */
+

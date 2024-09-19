@@ -43,7 +43,7 @@ public class Media {
             inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     @JsonProperty("artists")
-    @JsonIgnoreProperties(value = "createdMedia")
+    @JsonIgnoreProperties({"createdMedia", "albums"})//value = "createdMedia"
     private List<Artist> artists;
 
     @ManyToOne
