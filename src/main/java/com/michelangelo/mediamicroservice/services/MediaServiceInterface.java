@@ -2,8 +2,11 @@ package com.michelangelo.mediamicroservice.services;
 
 import com.michelangelo.mediamicroservice.entities.Media;
 
+import java.util.List;
+
 public interface MediaServiceInterface {
     Media getMedia(Long mediaId,Long userId);
     Media getMediaById(Long mediaId);
+    List<Media> getAllMedia();
 
 }

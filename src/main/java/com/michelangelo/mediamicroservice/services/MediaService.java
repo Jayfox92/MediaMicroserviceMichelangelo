@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 
 @Service
 public class MediaService implements MediaServiceInterface{
@@ -34,4 +36,11 @@ public class MediaService implements MediaServiceInterface{
         return mediaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Media", "id", id));
     }
+
+    @Override
+    public List<Media> getAllMedia() {
+        return mediaRepository.findAll();
+    }
+
+
 }

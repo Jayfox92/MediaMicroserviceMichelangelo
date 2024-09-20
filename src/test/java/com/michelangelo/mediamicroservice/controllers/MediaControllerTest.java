@@ -10,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import java.util.ArrayList;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,6 +52,15 @@ public class MediaControllerTest {
         when(mediaService.getMediaById(mediaId)).thenReturn(media);
 
         mockMvc.perform(get("/media/media/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetAllMedia() throws Exception{
+
+        when(mediaService.getAllMedia()).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get("/media/media/getall"))
                 .andExpect(status().isOk());
     }
 }

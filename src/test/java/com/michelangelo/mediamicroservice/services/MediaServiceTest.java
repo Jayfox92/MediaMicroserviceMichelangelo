@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -114,6 +116,15 @@ public class MediaServiceTest {
 
         assertEquals("Media not found with id : " + mediaId, thrown.getMessage());
         verify(mediaRepositoryMock, times(1)).findById(mediaId);
+    }
+
+    @Test
+    public void shouldReturnListOfMedia(){
+        when(mediaRepositoryMock.findAll()).thenReturn(new ArrayList<>());
+
+        List<Media> result = mediaService.getAllMedia();
+        verify(mediaRepositoryMock, times(1)).findAll();
+        assertTrue(result.isEmpty());
     }
 
 
