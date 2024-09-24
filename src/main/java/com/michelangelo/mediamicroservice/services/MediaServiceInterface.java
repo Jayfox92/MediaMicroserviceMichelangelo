@@ -9,4 +9,9 @@ public interface MediaServiceInterface {
     Media getMediaById(Long mediaId);
     List<Media> getAllMedia();
 
+    // Hämta media baserat på genreId
+    List<Media> findMediaByGenreId(Long genreId);
+
+    List<Media> getAllMedia();
+
 }

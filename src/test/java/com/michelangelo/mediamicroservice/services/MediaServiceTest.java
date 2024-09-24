@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,8 @@ public class MediaServiceTest {
     @InjectMocks
     private MediaService mediaService;
 
-    private Media media;
+    private Media media1;
+    private Media media2;
     private MediaUser mediaUser;
 
     private long mediaId = 1L;
@@ -40,15 +43,21 @@ public class MediaServiceTest {
     @BeforeEach
     void setUp() {
         mediaUser = new MediaUser();
-        mediaUser.setId(1L);
-        media = new Media();
-        media.setId(this.mediaId);
+        mediaUser.setId(userId);
+
+        media1 = new Media();
+        media1.setId(1L);
+        media1.setTitle("Media One");
+
+        media2 = new Media();
+        media2.setId(2L);
+        media2.setTitle("Media Two");
     }
 
     // getMedia()
     @Test // Både media och användare hittas samt streaminghistorik uppdateras
     public void shouldReturnMediaAndUpdateStreamingHistoryWhenValidMediaIdAndUserIdIsProvided() {
-        when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media));
+        when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
         when(restTemplateMock.getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class))).thenReturn(mediaUser);
 
         Media result = mediaService.getMedia(mediaId, userId);
@@ -74,7 +83,7 @@ public class MediaServiceTest {
 
     @Test // UserId finns inte
     public void shouldThrowExceptionWhenInvalidUserIdIsProvided() {
-        when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media));
+        when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
         when(restTemplateMock.getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class))).thenReturn(null);
 
         ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> {
@@ -93,7 +102,7 @@ public class MediaServiceTest {
     @Test
     public void shouldReturnMediaWhenValidIdIsProvided() {
         // Given
-        when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media));
+        when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
 
         // When
         Media result = mediaService.getMediaById(mediaId);
@@ -117,15 +126,25 @@ public class MediaServiceTest {
         assertEquals("Media not found with id : " + mediaId, thrown.getMessage());
         verify(mediaRepositoryMock, times(1)).findById(mediaId);
     }
-
     @Test
-    public void shouldReturnListOfMedia(){
-        when(mediaRepositoryMock.findAll()).thenReturn(new ArrayList<>());
+    public void shouldReturnMediaWhenValidGenreIdIsProvided() {
+        long genreId = 1L;
+        when(mediaRepositoryMock.findByGenres_Id(genreId)).thenReturn(Arrays.asList(media1, media2));
+
+        List<Media> result = mediaService.findMediaByGenreId(genreId);
+
+
+    // Nytt test för getAllMedia
+    @Test
+    public void shouldReturnAllMedia() {
+        when(mediaRepositoryMock.findAll()).thenReturn(Arrays.asList(media1, media2));
 
         List<Media> result = mediaService.getAllMedia();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Media One", result.get(0).getTitle());
+        assertEquals("Media Two", result.get(1).getTitle());
         verify(mediaRepositoryMock, times(1)).findAll();
-        assertTrue(result.isEmpty());
     }
-
-
 }

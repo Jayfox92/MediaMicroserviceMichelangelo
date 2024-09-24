@@ -37,10 +37,13 @@ public class MediaService implements MediaServiceInterface{
                 .orElseThrow(() -> new ResourceNotFoundException("Media", "id", id));
     }
 
+    // Hämta media baserat på genreId
+    @Override
+    public List<Media> findMediaByGenreId(Long genreId) {
+        return mediaRepository.findByGenres_Id(genreId);
+    }
     @Override
     public List<Media> getAllMedia() {
         return mediaRepository.findAll();
     }
-
-
 }
