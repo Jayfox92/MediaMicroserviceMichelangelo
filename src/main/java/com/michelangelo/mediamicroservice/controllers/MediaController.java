@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/media/media")
@@ -30,7 +32,14 @@ public class MediaController {
     public ResponseEntity<Media>  getMediaByMediaId(@PathVariable Long mediaId) {
         return  ResponseEntity.ok(mediaService.getMediaById(mediaId));
     }
-
-}
-
+    @GetMapping("/genre/{genreId}")
+    public ResponseEntity<List<Media>> getMediaByGenreId(@PathVariable Long genreId) {
+        List<Media> mediaList = mediaService.findMediaByGenreId(genreId);
+        return ResponseEntity.ok(mediaList);
+    }
+    @GetMapping("/getall")
+    public ResponseEntity<List<Media>> getAllMedia(){
+        return ResponseEntity.ok(mediaService.getAllMedia());
+    }
+    }
 
