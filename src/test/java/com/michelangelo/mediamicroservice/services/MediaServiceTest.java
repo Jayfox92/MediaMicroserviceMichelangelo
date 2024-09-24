@@ -132,6 +132,7 @@ public class MediaServiceTest {
         when(mediaRepositoryMock.findByGenres_Id(genreId)).thenReturn(Arrays.asList(media1, media2));
 
         List<Media> result = mediaService.findMediaByGenreId(genreId);
+    }
 
 
     // Nytt test för getAllMedia

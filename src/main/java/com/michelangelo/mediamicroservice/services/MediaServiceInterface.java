@@ -12,6 +12,6 @@ public interface MediaServiceInterface {
     // Hämta media baserat på genreId
     List<Media> findMediaByGenreId(Long genreId);
 
-    List<Media> getAllMedia();
+    //List<Media> getAllMedia();
 
 }
