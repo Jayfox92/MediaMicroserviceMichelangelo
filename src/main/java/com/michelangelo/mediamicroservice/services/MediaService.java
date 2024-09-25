@@ -5,8 +5,11 @@ import com.michelangelo.mediamicroservice.entities.Media;
 import com.michelangelo.mediamicroservice.exceptions.ResourceNotFoundException;
 import com.michelangelo.mediamicroservice.repositories.MediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -24,9 +27,24 @@ public class MediaService implements MediaServiceInterface {
     public Media getMedia(Long mediaId, Long userId) {
         Media mediaToReturn = mediaRepository.findById(mediaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Media", "id", mediaId));
-        MediaUser user = restTemplate.getForObject("http://UserMicroservice/user/mediauser/getuser/" + userId, MediaUser.class);
-        if (user == null) throw new ResourceNotFoundException("MediaUser", "id", userId);
-        restTemplate.put("http://UserMicroservice/user/streamhistory/increment/" + user.getId() + "/" + mediaId, Void.class);
+
+        try {
+            MediaUser user = restTemplate.getForObject("http://UserMicroservice/user/mediauser/getuser/" + userId, MediaUser.class);
+            if (user == null) throw new ResourceNotFoundException("MediaUser", "id", userId);
+        }catch(RestClientException e){ // Olämpligt tillstånd med koppling till rest och kommunikation
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during communication with user microservice: " + e.getMessage(), e);
+        }catch(IllegalStateException e){ // Olämpligt tillstånd, det går inte att nå mikrotjänsten
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Illegal state: " + e.getMessage(), e);
+        }
+
+        try{
+            restTemplate.put("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId, Void.class);
+        }catch(RestClientException e){ // Olämpligt tillstånd med koppling till rest och kommunikation
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during communication with user microservice: " + e.getMessage(), e);
+        }catch(IllegalStateException e){ // Olämpligt tillstånd, det går inte att nå mikrotjänsten
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Illegal state: " + e.getMessage(), e);
+        }
+
         return mediaToReturn;
     }
 
