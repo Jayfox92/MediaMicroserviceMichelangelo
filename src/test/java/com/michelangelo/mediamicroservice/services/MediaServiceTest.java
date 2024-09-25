@@ -129,9 +129,10 @@ public class MediaServiceTest {
     @Test
     public void shouldReturnMediaWhenValidGenreIdIsProvided() {
         long genreId = 1L;
-        when(mediaRepositoryMock.findByGenres_Id(genreId)).thenReturn(Arrays.asList(media1, media2));
+        String typeOfMedia = "Musik";
+        when(mediaRepositoryMock.findByGenres_IdAndTypeOfMedia_Type(genreId,typeOfMedia)).thenReturn(Arrays.asList(media1, media2));
 
-        List<Media> result = mediaService.findMediaByGenreId(genreId);
+        List<Media> result = mediaService.findMediaByGenreId(genreId,typeOfMedia);
     }
 
 
