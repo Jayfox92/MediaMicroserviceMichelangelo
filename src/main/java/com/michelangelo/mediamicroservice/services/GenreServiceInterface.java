@@ -5,5 +5,5 @@ import com.michelangelo.mediamicroservice.entities.Genre;
 import java.util.List;
 
 public interface GenreServiceInterface {
-    public List<Genre> getAll();
+    List<Genre> getAll();
 }

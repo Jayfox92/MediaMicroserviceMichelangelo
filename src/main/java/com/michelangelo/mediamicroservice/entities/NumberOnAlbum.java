@@ -7,9 +7,10 @@ public class NumberOnAlbum {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private int numberOnAlbum;
     @ManyToOne
-    @JoinColumn(name = "album_id")
+    @JoinColumn(name = "album_id", nullable = false)
     private Album album;
 
     public NumberOnAlbum() {

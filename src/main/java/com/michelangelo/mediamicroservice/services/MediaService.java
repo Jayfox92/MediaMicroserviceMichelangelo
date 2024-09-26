@@ -51,4 +51,5 @@ public class MediaService implements MediaServiceInterface{
     public List<Media> getAllMediaByType(String mediaType) {
         return mediaRepository.findByTypeOfMedia_Type(mediaType);
     }
+
 }

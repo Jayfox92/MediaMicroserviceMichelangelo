@@ -15,7 +15,7 @@ public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 40)
+    @Column(length = 40, nullable = false)
     private String title;
     private LocalDate releaseDate;
     @ManyToMany
@@ -54,17 +54,6 @@ public class Media {
     @Column(nullable = false, length = 100)
     @JsonProperty("url") // This will ensure 'url' is included in JSON output
     private String url;
-
-
-    // This list will store the IDs of the artists related to this media
-    // Later, these IDs can be used to fetch full artist details from the Artist microservice
-    /*@ElementCollection
-    @CollectionTable(name = "media_artist_ids", joinColumns = @JoinColumn(name = "media_id"))
-    @Column(name = "artist_id")
-    private List<Long> artistIds;*/
-    /*public List<Long> getArtistIds() { return artistIds; }
-
-    public void setArtistIds(List<Long> artistIds) { this.artistIds = artistIds; }*/
 
 
     public Media() {

@@ -13,6 +13,7 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 100, nullable = false)
     private String title;
 
     @ManyToMany(mappedBy = "albums")
@@ -58,6 +59,5 @@ public class Album {
     public void setListOfMedia(List<Media> listOfMedia) {
         this.listOfMedia = listOfMedia;
     }
-
 
 }

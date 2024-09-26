@@ -10,6 +10,7 @@ public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 50, nullable = false)
     private String name;
     @ManyToMany(mappedBy = "genres")
     @JsonIgnoreProperties(value = "genres")
