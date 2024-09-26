@@ -10,7 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -92,6 +95,32 @@ public class MediaServiceTest {
         verify(mediaRepositoryMock, times(1)).findById(mediaId);
         verify(restTemplateMock, times(1)).getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class));
         verify(restTemplateMock, times(0)).put(eq("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId), eq(Void.class));
+    }
+
+
+    @Test // Testa catch - MediaUser
+    public void shouldThrowExceptionWhenUserServiceFailsInMediaUser(){
+        when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
+        when(restTemplateMock.getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class))).thenThrow(RestClientException.class);
+
+        ResponseStatusException thrown = assertThrows(ResponseStatusException.class, () -> {mediaService.getMedia(mediaId, userId);});
+
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE, thrown.getStatusCode());
+        verify(restTemplateMock, times(1)).getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class));
+        verify(restTemplateMock, never()).put(eq("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId), eq(Void.class));
+    }
+
+    @Test // Testa catch -
+    public void shouldThrowExceptionWhenStreamHistoryFailsInMediaUser(){
+        when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
+        when(restTemplateMock.getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class))).thenReturn(mediaUser);
+        doThrow(RestClientException.class).when(restTemplateMock).put(eq("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId), any());
+
+        ResponseStatusException thrown = assertThrows(ResponseStatusException.class, () -> {mediaService.getMedia(mediaId, userId);});
+
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE, thrown.getStatusCode());
+        verify(restTemplateMock, times(1)).getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class));
+        verify(restTemplateMock, times(1)).put(eq("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId), eq(Void.class));
     }
 
 
