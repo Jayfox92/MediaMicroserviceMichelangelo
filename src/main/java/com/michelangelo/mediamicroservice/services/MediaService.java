@@ -39,11 +39,16 @@ public class MediaService implements MediaServiceInterface{
 
     // Hämta media baserat på genreId
     @Override
-    public List<Media> findMediaByGenreId(Long genreId) {
-        return mediaRepository.findByGenres_Id(genreId);
+    public List<Media> findMediaByGenreId(Long genreId, String mediaType) {
+        return mediaRepository.findByGenres_IdAndTypeOfMedia_Type(genreId, mediaType);
     }
     @Override
     public List<Media> getAllMedia() {
         return mediaRepository.findAll();
+    }
+
+    @Override
+    public List<Media> getAllMediaByType(String mediaType) {
+        return mediaRepository.findByTypeOfMedia_Type(mediaType);
     }
 }
