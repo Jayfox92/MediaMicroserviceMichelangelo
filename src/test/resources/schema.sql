@@ -3,7 +3,7 @@
 -- Tabell: Album
 CREATE TABLE album (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                       title VARCHAR(100)
+                       title VARCHAR(100) NOT NULL
 );
 
 -- Tabell: Artist
@@ -15,19 +15,19 @@ CREATE TABLE artist (
 -- Tabell: Genre
 CREATE TABLE genre (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                       name VARCHAR(40) NOT NULL
+                       name VARCHAR(50) NOT NULL
 );
 
 -- Tabell: TypeOfMedia
 CREATE TABLE type_of_media (
                                id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                               type VARCHAR(40) NOT NULL
+                               type VARCHAR(50) NOT NULL
 );
 
 -- Tabell: NumberOnAlbum
 CREATE TABLE number_on_album (
                                  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                 number_on_album INT,
+                                 number_on_album INT NOT NULL,
                                  album_id BIGINT,
                                  FOREIGN KEY (album_id) REFERENCES album(id)
 );
@@ -35,12 +35,12 @@ CREATE TABLE number_on_album (
 -- Tabell: Media
 CREATE TABLE media (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                       title VARCHAR(40),
+                       title VARCHAR(40) NOT NULL,
                        release_date DATE,
                        type_of_media_id BIGINT,
                        number_on_album_id BIGINT,
                        album_id BIGINT,
-                       url VARCHAR(100),
+                       url VARCHAR(100) MOT NULL,
                        FOREIGN KEY (type_of_media_id) REFERENCES type_of_media(id),
                        FOREIGN KEY (number_on_album_id) REFERENCES number_on_album(id),
                        FOREIGN KEY (album_id) REFERENCES album(id)
