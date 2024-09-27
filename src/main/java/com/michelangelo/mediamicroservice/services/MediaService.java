@@ -32,7 +32,7 @@ public class MediaService implements MediaServiceInterface{
             MediaUser user = restTemplate.getForObject("http://UserMicroservice/user/mediauser/getuser/" + userId, MediaUser.class);
             if (user == null) throw new ResourceNotFoundException("MediaUser", "id", userId);
             restTemplate.put("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId, Void.class);
-        }catch(RestClientException e){ // Olämpligt tillstånd, det går inte att nå mikrotjänsten // IllegalStateException | ResourceAccessException e
+        }catch(RestClientException | IllegalStateException e){ // Olämpligt tillstånd, det går inte att nå mikrotjänsten // IllegalStateException | ResourceAccessException e
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "UserMicroservice: " + e.getMessage(), e);
         }
 
