@@ -25,13 +25,13 @@ class ArtistServiceTest {
     private Artist artist;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         artistService = new ArtistService(artistRepositoryMock);
         artist = new Artist();
     }
 
     @Test
-    public void shouldNotThrowIfArtistExistsAndReturnEmptyResultlist(){
+    public void shouldNotThrowIfArtistExistsAndReturnEmptyResultlist() {
         artist.setCreatedMedia(Collections.emptyList());
         when(artistRepositoryMock.findById(anyLong())).thenReturn(Optional.of(artist));
         List<Media> result = artistService.getMediaByArtist(1L);
@@ -40,15 +40,14 @@ class ArtistServiceTest {
     }
 
     @Test
-    public void shouldThrowIfNoArtistWithIdCanBeFound(){
+    public void shouldThrowIfNoArtistWithIdCanBeFound() {
         when(artistRepositoryMock.existsById(anyLong())).thenReturn(false);
-        assertThrows(ResourceNotFoundException.class, ()->artistService.getMediaByArtist(1L));
+        assertThrows(ResourceNotFoundException.class, () -> artistService.getMediaByArtist(1L));
     }
 
 
-    // Tests for: getAllAlbums
     @Test
-    public void shouldReturnAllAlbumsWhenArtistExists(){
+    public void shouldReturnAllAlbumsWhenArtistExists() {
         long testId = 1L;
         List<Album> albumList = new ArrayList<>(List.of(new Album(), new Album(), new Album()));
         when(artistRepositoryMock.findAlbumsById(testId)).thenReturn(albumList);
@@ -58,12 +57,11 @@ class ArtistServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenNoArtistExists(){
+    public void shouldThrowExceptionWhenNoArtistExists() {
         long testId = 1L;
         when(artistRepositoryMock.findById(testId)).thenReturn(Optional.empty());
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, ()-> artistService.getAllAlbums(testId));
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> artistService.getAllAlbums(testId));
         assertEquals("Artist not found with id : 1", exception.getMessage());
     }
-
 
 }

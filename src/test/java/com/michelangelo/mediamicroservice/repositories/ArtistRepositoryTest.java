@@ -120,5 +120,4 @@ class ArtistRepositoryTest {
         assertEquals(0, albumsReturned.size());
         assertTrue(albumsReturned.isEmpty());
     }
-
 }

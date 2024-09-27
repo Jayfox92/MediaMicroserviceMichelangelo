@@ -1,8 +1,8 @@
 package com.michelangelo.mediamicroservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "numberOnAlbum"})
 public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +19,9 @@ public class Media {
     private LocalDate releaseDate;
     @ManyToMany
     @JoinTable(
-            name = "media_genre", // Namnet på join-tabellen
-            joinColumns = @JoinColumn(name = "media_id"), // Kolumn som refererar till Media
-            inverseJoinColumns = @JoinColumn(name = "genre_id") // Kolumn som refererar till Genre
+            name = "media_genre",
+            joinColumns = @JoinColumn(name = "media_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     @JsonIgnoreProperties(value = "listOfMedia")
     private List<Genre> genres;
@@ -43,7 +42,7 @@ public class Media {
             inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     @JsonProperty("artists")
-    @JsonIgnoreProperties({"createdMedia", "albums"})//value = "createdMedia"
+    @JsonIgnoreProperties({"createdMedia", "albums"})
     private List<Artist> artists;
 
     @ManyToOne
@@ -52,11 +51,16 @@ public class Media {
     private Album album;
 
     @Column(nullable = false, length = 100)
-    @JsonProperty("url") // This will ensure 'url' is included in JSON output
+    @JsonProperty("url")
     private String url;
 
 
     public Media() {
+    }
+
+    public Media(Long id, String title) {
+        this.id = id;
+        this.title = title;
     }
 
     public NumberOnAlbum getNumberOnAlbum() {

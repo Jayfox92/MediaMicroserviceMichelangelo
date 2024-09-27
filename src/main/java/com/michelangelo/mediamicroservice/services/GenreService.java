@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GenreService implements GenreServiceInterface{
+public class GenreService implements GenreServiceInterface {
     @Autowired
     private GenreRepository genreRepository;
 

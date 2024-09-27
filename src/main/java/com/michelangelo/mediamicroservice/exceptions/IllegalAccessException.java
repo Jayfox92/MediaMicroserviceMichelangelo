@@ -10,7 +10,7 @@ public class IllegalAccessException extends RuntimeException {
 
 
     public IllegalAccessException(String user) {
-        super(String.format("Illegal access, %s authorized but not allowed to this resource",user));
+        super(String.format("Illegal access, %s authorized but not allowed to this resource", user));
         this.user = user;
     }
 

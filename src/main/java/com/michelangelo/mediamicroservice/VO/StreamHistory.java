@@ -5,7 +5,8 @@ public class StreamHistory {
     private int mediaId;
     private int streamHistoryCount;
 
-    public StreamHistory(){}
+    public StreamHistory() {
+    }
 
     public long getId() {
         return id;

@@ -17,14 +17,13 @@ public class ArtistController {
     private ArtistService artistService;
 
     @GetMapping("/getallalbumsbyartist/{id}")
-    public ResponseEntity<List<Album>> getAllAlbums(@PathVariable ("id") long id){
+    public ResponseEntity<List<Album>> getAllAlbums(@PathVariable("id") long id) {
         return ResponseEntity.ok(artistService.getAllAlbums(id));
     }
 
     @GetMapping("/getmediabyartist/{id}")
-    public ResponseEntity<List<Media>> getMediaByArtist(@PathVariable("id") long id){
+    public ResponseEntity<List<Media>> getMediaByArtist(@PathVariable("id") long id) {
         return ResponseEntity.ok(artistService.getMediaByArtist(id));
     }
-
 
 }

@@ -17,15 +17,16 @@ public class Album {
     private String title;
 
     @ManyToMany(mappedBy = "albums")
-    @JsonIgnoreProperties({ "albums", "createdMedia" })
+    @JsonIgnoreProperties({"albums", "createdMedia"})
     private List<Artist> artists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "album")   // Antar att Media har en 'album' relation
+    @OneToMany(mappedBy = "album")
     @JsonIgnoreProperties(value = "album")
     private List<Media> listOfMedia;
 
 
-    public Album() {}
+    public Album() {
+    }
 
 
     public String getTitle() {

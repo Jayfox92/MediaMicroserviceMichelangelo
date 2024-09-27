@@ -16,6 +16,6 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     List<Media> findAllMediaByArtistId(@Param("artistId") long artistId);
 
     @Query("SELECT a FROM Album a JOIN a.artists ar WHERE ar.id = :artistId")
-    List<Album> findAlbumsById(@Param ("artistId") Long artistId);
+    List<Album> findAlbumsById(@Param("artistId") Long artistId);
 
 }
