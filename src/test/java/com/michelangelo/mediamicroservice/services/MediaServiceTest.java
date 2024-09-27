@@ -17,6 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -154,18 +156,24 @@ public class MediaServiceTest {
         verify(mediaRepositoryMock, times(1)).findById(mediaId);
     }
     @Test
-    public void shouldReturnMediaWhenValidGenreIdIsProvided() {
+    public void shouldReturnMediaWhenValidGenreIdAndMediaTypeAreProvided() {
         long genreId = 1L;
-        when(mediaRepositoryMock.findByGenres_Id(genreId)).thenReturn(Arrays.asList(media1, media2));
+        String mediaType = "Musik"; // Definiera media-typen, t.ex. "Musik"
 
-        List<Media> result = mediaService.findMediaByGenreId(genreId);
+        // Mockar repository-anropet så att det returnerar media1 och media2
+        when(mediaRepositoryMock.findByGenres_IdAndTypeOfMedia_Type(genreId, mediaType))
+                .thenReturn(Arrays.asList(media1, media2));
 
+        // Anropar service-metoden
+        List<Media> result = mediaService.findMediaByGenreId(genreId, mediaType);
+
+        // Bekräftar att rätt media returnerades
         assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals("Media One", result.get(0).getTitle());
-        assertEquals("Media Two", result.get(1).getTitle());
-        verify(mediaRepositoryMock, times(1)).findByGenres_Id(genreId);
+        assertEquals(2, result.size()); // Verifierar att två media returneras
+        assertTrue(result.contains(media1));
+        assertTrue(result.contains(media2));
     }
+
 
     // Nytt test för getAllMedia
     @Test
@@ -179,5 +187,23 @@ public class MediaServiceTest {
         assertEquals("Media One", result.get(0).getTitle());
         assertEquals("Media Two", result.get(1).getTitle());
         verify(mediaRepositoryMock, times(1)).findAll();
+    }
+    @Test
+    public void shouldReturnAllMediaByType() {
+        String mediaType = "Musik"; // Definiera media-typen, t.ex. "Musik"
+
+        // Mockar repository-anropet så att det returnerar media1 och media2
+        when(mediaRepositoryMock.findByTypeOfMedia_Type(mediaType))
+                .thenReturn(Arrays.asList(media1, media2));
+
+        // Anropar service-metoden
+        List<Media> result = mediaService.getAllMediaByType(mediaType);
+
+        // Bekräftar att rätt media returnerades
+        assertNotNull(result);
+        assertEquals(2, result.size()); // Verifierar att två media returneras
+        assertTrue(result.contains(media1));
+        assertTrue(result.contains(media2));
+        verify(mediaRepositoryMock, times(1)).findByTypeOfMedia_Type(mediaType);
     }
 }

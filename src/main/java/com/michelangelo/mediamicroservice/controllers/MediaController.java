@@ -34,11 +34,12 @@ public class MediaController {
     public ResponseEntity<Media>  getMediaByMediaId(@PathVariable Long mediaId) {
         return  ResponseEntity.ok(mediaService.getMediaById(mediaId));
     }
-    @GetMapping("/genre/{genreId}")
-    public ResponseEntity<List<Media>> getMediaByGenreId(@PathVariable Long genreId) {
-        List<Media> mediaList = mediaService.findMediaByGenreId(genreId);
+    @GetMapping("/genre/{genreId}/{mediaType}")
+    public ResponseEntity<List<Media>> getMediaByGenreId(@PathVariable Long genreId, @PathVariable String mediaType) {
+        List<Media> mediaList = mediaService.findMediaByGenreId(genreId, mediaType);
         return ResponseEntity.ok(mediaList);
     }
+
     @GetMapping("/getall")
     public ResponseEntity<List<Media>> getAllMedia(){
         return ResponseEntity.ok(mediaService.getAllMedia());
@@ -53,4 +54,9 @@ public class MediaController {
                 .body(new CustomErrorResponse(ex.getStatusCode(), ex.getReason(), ex.getMessage()));
     }
 
+
+    @GetMapping("/getallbymediatype/{mediaType}")
+    public ResponseEntity<List<Media>> getAllMediaByType(@PathVariable String mediaType) {
+        return ResponseEntity.ok(mediaService.getAllMediaByType(mediaType));
+    }
 }

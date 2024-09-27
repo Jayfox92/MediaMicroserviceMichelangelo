@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//@JsonIgnoreProperties("createdMedia")
 
 @Entity
 public class Artist {
@@ -18,11 +17,7 @@ public class Artist {
     private String name;
 
     @ManyToMany(mappedBy = "artists")
-    /*@JoinTable(
-            name = "media_artist", // Join-table name
-            joinColumns = @JoinColumn(name = "media_id"), // Column in media_artist table that references Media
-            inverseJoinColumns = @JoinColumn(name = "artist_id") // Column in media_artist table that references Artist
-    )*/
+
     @JsonIgnoreProperties(value = "artists")
     private List<Media> createdMedia;
 

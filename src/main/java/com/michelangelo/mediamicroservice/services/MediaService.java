@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @Service
-public class MediaService implements MediaServiceInterface {
+public class MediaService implements MediaServiceInterface{
     @Autowired
     MediaRepository mediaRepository;
     @Autowired
@@ -24,7 +24,7 @@ public class MediaService implements MediaServiceInterface {
 
     // Hämta media med media id och user id samt spara spelningen av media
     @Override
-    public Media getMedia(Long mediaId, Long userId) {
+    public Media getMedia(Long mediaId,Long userId) {
         Media mediaToReturn = mediaRepository.findById(mediaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Media", "id", mediaId));
 
@@ -48,11 +48,17 @@ public class MediaService implements MediaServiceInterface {
 
     // Hämta media baserat på genreId
     @Override
-    public List<Media> findMediaByGenreId(Long genreId) {
-        return mediaRepository.findByGenres_Id(genreId);
+    public List<Media> findMediaByGenreId(Long genreId, String mediaType) {
+        return mediaRepository.findByGenres_IdAndTypeOfMedia_Type(genreId, mediaType);
     }
     @Override
     public List<Media> getAllMedia() {
         return mediaRepository.findAll();
     }
+
+    @Override
+    public List<Media> getAllMediaByType(String mediaType) {
+        return mediaRepository.findByTypeOfMedia_Type(mediaType);
+    }
+
 }
