@@ -24,20 +24,20 @@ public class UserServiceResponseErrorHandler implements ResponseErrorHandler {
         HttpStatusCode statusCode = response.getStatusCode();
 
         if (statusCode.is4xxClientError()) { // Client Error - 4xx
-            if(statusCode == HttpStatus.NOT_FOUND) {
+            if (statusCode == HttpStatus.NOT_FOUND) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Requested resource in user microservice not found");
-            }else if(statusCode == HttpStatus.BAD_REQUEST){
+            } else if (statusCode == HttpStatus.BAD_REQUEST) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request/Bad request for user microservice");
-            }else {
+            } else {
                 throw new ResponseStatusException(statusCode, "Unexpected error during user microservice communication: " + response.getStatusText());
             }
 
-        }else if(statusCode.is5xxServerError()) { // Server Error - 5xx
-            if(statusCode == HttpStatus.SERVICE_UNAVAILABLE) {
+        } else if (statusCode.is5xxServerError()) { // Server Error - 5xx
+            if (statusCode == HttpStatus.SERVICE_UNAVAILABLE) {
                 throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "UserMicroservice is not available");
-            }else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
+            } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error during UserMicroservice communication");
-            }else {
+            } else {
                 throw new ResponseStatusException(statusCode, "Unexpected error during UserMicroservice communication: " + response.getStatusText());
             }
         }

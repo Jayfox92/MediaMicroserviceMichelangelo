@@ -10,10 +10,10 @@ import java.util.List;
 @Entity
 public class Artist {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column (length = 40, nullable = false)
+    @Column(length = 40, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "artists")
@@ -31,7 +31,8 @@ public class Artist {
     private List<Album> albums = new ArrayList<>();
 
 
-    public Artist(){}
+    public Artist() {
+    }
 
 
     public long getId() {

@@ -5,7 +5,8 @@ public class MediaUser {
     private String userName;
     private String email;
 
-    public MediaUser(){}
+    public MediaUser() {
+    }
 
 
     public long getId() {

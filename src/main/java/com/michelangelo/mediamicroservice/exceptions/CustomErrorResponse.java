@@ -18,6 +18,7 @@ public class CustomErrorResponse {
     public HttpStatusCode getStatus() {
         return status;
     }
+
     public void setStatus(HttpStatusCode status) {
         this.status = status;
     }
@@ -25,6 +26,7 @@ public class CustomErrorResponse {
     public String getErrorType() {
         return errorType;
     }
+
     public void setErrorType(String errorType) {
         this.errorType = errorType;
     }
@@ -32,6 +34,7 @@ public class CustomErrorResponse {
     public String getMessage() {
         return message;
     }
+
     public void setMessage(String message) {
         this.message = message;
     }

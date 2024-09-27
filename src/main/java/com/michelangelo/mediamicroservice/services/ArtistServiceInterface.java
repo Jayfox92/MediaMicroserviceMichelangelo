@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ArtistServiceInterface {
     List<Album> getAllAlbums(long id);
+
     List<Media> getMediaByArtist(long id);
 }

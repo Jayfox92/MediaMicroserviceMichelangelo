@@ -16,8 +16,15 @@ public class Genre {
     @JsonIgnoreProperties(value = "genres")
     private List<Media> listOfMedia;
 
+
     public Genre() {
     }
+
+    public Genre(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
 
     public String getName() {
         return name;

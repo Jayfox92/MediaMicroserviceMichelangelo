@@ -17,8 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,8 +55,8 @@ public class MediaServiceTest {
         media2.setTitle("Media Two");
     }
 
-    // getMedia()
-    @Test // Både media och användare hittas samt streaminghistorik uppdateras
+
+    @Test
     public void shouldReturnMediaAndUpdateStreamingHistoryWhenValidMediaIdAndUserIdIsProvided() {
         when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
         when(restTemplateMock.getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class))).thenReturn(mediaUser);
@@ -72,7 +70,7 @@ public class MediaServiceTest {
         verify(restTemplateMock, times(1)).put(eq("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId), eq(Void.class));
     }
 
-    @Test // MediaId finns inte
+    @Test
     public void shouldThrowExceptionWhenInvalidMediaIdIsProvided() {
         when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.empty());
 
@@ -84,7 +82,7 @@ public class MediaServiceTest {
         verify(mediaRepositoryMock, times(1)).findById(mediaId);
     }
 
-    @Test // UserId finns inte
+    @Test
     public void shouldThrowExceptionWhenInvalidUserIdIsProvided() {
         when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
         when(restTemplateMock.getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class))).thenReturn(null);
@@ -100,25 +98,29 @@ public class MediaServiceTest {
     }
 
 
-    @Test // Testa catch - MediaUser
-    public void shouldThrowExceptionWhenUserServiceFailsInMediaUser(){
+    @Test
+    public void shouldThrowExceptionWhenUserServiceFailsInMediaUser() {
         when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
         when(restTemplateMock.getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class))).thenThrow(RestClientException.class);
 
-        ResponseStatusException thrown = assertThrows(ResponseStatusException.class, () -> {mediaService.getMedia(mediaId, userId);});
+        ResponseStatusException thrown = assertThrows(ResponseStatusException.class, () -> {
+            mediaService.getMedia(mediaId, userId);
+        });
 
         assertEquals(HttpStatus.SERVICE_UNAVAILABLE, thrown.getStatusCode());
         verify(restTemplateMock, times(1)).getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class));
         verify(restTemplateMock, never()).put(eq("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId), eq(Void.class));
     }
 
-    @Test // Testa catch -
-    public void shouldThrowExceptionWhenStreamHistoryFailsInMediaUser(){
+    @Test
+    public void shouldThrowExceptionWhenStreamHistoryFailsInMediaUser() {
         when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
         when(restTemplateMock.getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class))).thenReturn(mediaUser);
         doThrow(RestClientException.class).when(restTemplateMock).put(eq("http://UserMicroservice/user/streamhistory/increment/" + userId + "/" + mediaId), any());
 
-        ResponseStatusException thrown = assertThrows(ResponseStatusException.class, () -> {mediaService.getMedia(mediaId, userId);});
+        ResponseStatusException thrown = assertThrows(ResponseStatusException.class, () -> {
+            mediaService.getMedia(mediaId, userId);
+        });
 
         assertEquals(HttpStatus.SERVICE_UNAVAILABLE, thrown.getStatusCode());
         verify(restTemplateMock, times(1)).getForObject(eq("http://UserMicroservice/user/mediauser/getuser/" + userId), eq(MediaUser.class));
@@ -126,17 +128,16 @@ public class MediaServiceTest {
     }
 
 
-
     // getMediaById()
     @Test
     public void shouldReturnMediaWhenValidIdIsProvided() {
-        // Given
+
         when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.of(media1));
 
-        // When
+
         Media result = mediaService.getMediaById(mediaId);
 
-        // Then
+
         assertNotNull(result);
         assertEquals(mediaId, result.getId());
         verify(mediaRepositoryMock, times(1)).findById(mediaId);
@@ -144,10 +145,10 @@ public class MediaServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenInvalidIdIsProvided() {
-        // Given
+
         when(mediaRepositoryMock.findById(mediaId)).thenReturn(Optional.empty());
 
-        // When & Then
+
         ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> {
             mediaService.getMediaById(mediaId);
         });
@@ -155,27 +156,26 @@ public class MediaServiceTest {
         assertEquals("Media not found with id : " + mediaId, thrown.getMessage());
         verify(mediaRepositoryMock, times(1)).findById(mediaId);
     }
+
     @Test
     public void shouldReturnMediaWhenValidGenreIdAndMediaTypeAreProvided() {
         long genreId = 1L;
-        String mediaType = "Musik"; // Definiera media-typen, t.ex. "Musik"
+        String mediaType = "Musik";
 
-        // Mockar repository-anropet så att det returnerar media1 och media2
-        when(mediaRepositoryMock.findByGenres_IdAndTypeOfMedia_Type(genreId, mediaType))
-                .thenReturn(Arrays.asList(media1, media2));
 
-        // Anropar service-metoden
+        when(mediaRepositoryMock.findByGenres_IdAndTypeOfMedia_Type(genreId, mediaType)).thenReturn(Arrays.asList(media1, media2));
+
+
         List<Media> result = mediaService.findMediaByGenreId(genreId, mediaType);
 
-        // Bekräftar att rätt media returnerades
+
         assertNotNull(result);
-        assertEquals(2, result.size()); // Verifierar att två media returneras
+        assertEquals(2, result.size());
         assertTrue(result.contains(media1));
         assertTrue(result.contains(media2));
     }
 
 
-    // Nytt test för getAllMedia
     @Test
     public void shouldReturnAllMedia() {
         when(mediaRepositoryMock.findAll()).thenReturn(Arrays.asList(media1, media2));
@@ -188,20 +188,20 @@ public class MediaServiceTest {
         assertEquals("Media Two", result.get(1).getTitle());
         verify(mediaRepositoryMock, times(1)).findAll();
     }
+
     @Test
     public void shouldReturnAllMediaByType() {
-        String mediaType = "Musik"; // Definiera media-typen, t.ex. "Musik"
+        String mediaType = "Musik";
 
-        // Mockar repository-anropet så att det returnerar media1 och media2
-        when(mediaRepositoryMock.findByTypeOfMedia_Type(mediaType))
-                .thenReturn(Arrays.asList(media1, media2));
 
-        // Anropar service-metoden
+        when(mediaRepositoryMock.findByTypeOfMedia_Type(mediaType)).thenReturn(Arrays.asList(media1, media2));
+
+
         List<Media> result = mediaService.getAllMediaByType(mediaType);
 
-        // Bekräftar att rätt media returnerades
+
         assertNotNull(result);
-        assertEquals(2, result.size()); // Verifierar att två media returneras
+        assertEquals(2, result.size());
         assertTrue(result.contains(media1));
         assertTrue(result.contains(media2));
         verify(mediaRepositoryMock, times(1)).findByTypeOfMedia_Type(mediaType);
