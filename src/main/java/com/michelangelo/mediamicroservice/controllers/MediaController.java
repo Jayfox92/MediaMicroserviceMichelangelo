@@ -1,10 +1,12 @@
 package com.michelangelo.mediamicroservice.controllers;
 
 import com.michelangelo.mediamicroservice.entities.Media;
+import com.michelangelo.mediamicroservice.exceptions.CustomErrorResponse;
 import com.michelangelo.mediamicroservice.services.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -41,6 +43,15 @@ public class MediaController {
     @GetMapping("/getall")
     public ResponseEntity<List<Media>> getAllMedia(){
         return ResponseEntity.ok(mediaService.getAllMedia());
+    }
+
+
+    // Hanterar ResponseStatusExceptions med en tydligare respons av CustomErrorResponse
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<CustomErrorResponse> handleExceptionResponse(ResponseStatusException ex) {
+        return ResponseEntity
+                .status(ex.getStatusCode())
+                .body(new CustomErrorResponse(ex.getStatusCode(), ex.getReason(), ex.getMessage()));
     }
 
 
