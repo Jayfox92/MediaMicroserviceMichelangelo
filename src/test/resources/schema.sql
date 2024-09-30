@@ -40,7 +40,7 @@ CREATE TABLE media (
                        type_of_media_id BIGINT,
                        number_on_album_id BIGINT,
                        album_id BIGINT,
-                       url VARCHAR(100) MOT NULL,
+                       url VARCHAR(100) NOT NULL,
                        FOREIGN KEY (type_of_media_id) REFERENCES type_of_media(id),
                        FOREIGN KEY (number_on_album_id) REFERENCES number_on_album(id),
                        FOREIGN KEY (album_id) REFERENCES album(id)
